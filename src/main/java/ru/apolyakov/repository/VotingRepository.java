@@ -22,7 +22,7 @@ public interface VotingRepository extends JpaRepository<Vote, Integer> {
     Optional<Vote> getByRestaurantIdAndUserIdAndDate(int restaurantId, int userId, LocalDate start, LocalDateTime end);
 
     @Query("SELECT v FROM Vote v JOIN FETCH v.restaurant WHERE v.user.id =?1 and v.created = ?2 ORDER BY v.created DESC")
-    List<Vote> getWithRestaurantsAndUserIdByDate(int userId, LocalDate date);
+    List<Vote> getVotesByUserIdByDate(int userId, LocalDate date);
 
     @Override
     @Transactional

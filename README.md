@@ -21,7 +21,7 @@ Each restaurant provides new menu each day.
 
 Проголосовать (доступ для имеющих роль Пользователь):
 
-`curl -i -X GET http://localhost:8080/api/vote/restaurantId
+`curl -i -X POST -d rate=5.0 http://localhost:8080/api/vote/restaurantId
 `
 
 Также с помощью Spring Data Rest сформированы следующие rest-api (доступ для имеющих роль Администратор):

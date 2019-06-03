@@ -27,10 +27,5 @@ public class VoteRestController {
     public Vote voteFor(@PathVariable("restaurantId")Integer restaurantId,
                                         @RequestParam(value = "rate", defaultValue = "0") Double rate){
         return voteService.voteFor(restaurantId, rate);
-            /*Vote created = voteService.voteFor(restaurantId, rate);
-            URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path(REST_URL + "vote" + "/{id}")
-                    .buildAndExpand(created.getId()).toUri();
-            return ResponseEntity.created(uriOfNewResource).body(created);*/
     }
 }

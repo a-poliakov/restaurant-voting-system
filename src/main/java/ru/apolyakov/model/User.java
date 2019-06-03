@@ -70,6 +70,8 @@ public class User extends AbstractNamedEntity implements HasEmail {
     private Set<Role> roles;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @Fetch(FetchMode.SUBSELECT)
+    @BatchSize(size = 200)
     @OrderBy("created DESC")
     private List<Vote> votes;
 

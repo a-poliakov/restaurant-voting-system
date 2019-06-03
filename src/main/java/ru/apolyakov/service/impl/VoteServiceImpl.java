@@ -15,6 +15,7 @@ import ru.apolyakov.service.VoteService;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Service
 public class VoteServiceImpl implements VoteService {
@@ -36,7 +37,10 @@ public class VoteServiceImpl implements VoteService {
         LocalDate today = LocalDate.now();
         AuthorizedUser authorizedUser = SecurityUtil.get();
         LocalTime now = LocalTime.now();
-        Vote vote = votingRepository.findByRestaurantIdAndUserIdAndDate(restaurantId, authorizedUser.getId(), today).orElse(null);
+        List<Vote> todaysVotes = votingRepository.getVotesByUserIdByDate(authorizedUser.getId(), today);
+        //Vote vote = votingRepository.findByRestaurantIdAndUserIdAndDate(restaurantId, authorizedUser.getId(), today).orElse(null);
+        Vote vote = todaysVotes == null || todaysVotes.isEmpty() ? null : todaysVotes.get(0);
+
         Restaurant restaurant = restaurantRepository.findById(restaurantId).orElse(null);
         if (restaurant == null)
         {
@@ -58,6 +62,7 @@ public class VoteServiceImpl implements VoteService {
         else if (now.isBefore(DEADLINE_VOTE_HOUR))
         {
             vote.setRate(rate);
+            vote.setRestaurant(restaurant);
             return votingRepository.save(vote);
         }
         throw new NotAcceptableException();
