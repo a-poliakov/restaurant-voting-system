@@ -14,3 +14,28 @@ Each restaurant provides new menu each day.
 
 ## REST API
 
+Авторизация (доступ для всех):
+
+`curl -i -X POST -d username=user -d password=password -c c:\curl\cookies.txt http://localhost:8080/login
+`
+
+Проголосовать (доступ для имеющих роль Пользователь):
+
+`curl -i -X GET http://localhost:8080/api/vote/restaurantId
+`
+
+Также с помощью Spring Data Rest сформированы следующие rest-api (доступ для имеющих роль Администратор):
+
+
+    "restaurants" : {
+      "href" : "http://localhost:8080/api/restaurants"
+    },
+    "users" : {
+      "href" : "http://localhost:8080/api/users"
+    },
+    "menus" : {
+      "href" : "http://localhost:8080/api/menus"
+    },
+    "menuItems" : {
+      "href" : "http://localhost:8080/api/menuItems"
+    }

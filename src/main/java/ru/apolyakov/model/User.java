@@ -1,5 +1,6 @@
 package ru.apolyakov.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
@@ -21,13 +22,28 @@ import java.util.*;
 
 @Entity
 @Table(name = "users")
+@JsonIgnoreProperties(value= {"roles","votes"})
 public class User extends AbstractNamedEntity implements HasEmail {
+    @Column(name = "login", nullable = false, unique = true)
+    @NotBlank
+    @Size(max = 100)
+    @SafeHtml(groups = {View.Web.class})
+    private String login;
+
     @Column(name = "email", nullable = false, unique = true)
     @Email
     @NotBlank
     @Size(max = 100)
     @SafeHtml(groups = {View.Web.class})  // https://stackoverflow.com/questions/17480809
     private String email;
+
+    @Column(name = "first_name")
+    @Size(max = 128)
+    private String firstName;
+
+    @Column(name = "last_name")
+    @Size(max = 128)
+    private String lastName;
 
     @Column(name = "password", nullable = false)
     @NotBlank
@@ -54,8 +70,8 @@ public class User extends AbstractNamedEntity implements HasEmail {
     private Set<Role> roles;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    @OrderBy("dateTime DESC")
-    protected List<Vote> votes;
+    @OrderBy("created DESC")
+    private List<Vote> votes;
 
     public User() {
     }
@@ -114,12 +130,44 @@ public class User extends AbstractNamedEntity implements HasEmail {
         return password;
     }
 
-    public void setRoles(Collection<Role> roles) {
-        this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
+    public String getLogin() {
+        return login;
     }
 
-    public List<Vote> getMeals() {
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public List<Vote> getVotes() {
         return votes;
+    }
+
+    public void setVotes(List<Vote> votes) {
+        this.votes = votes;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
     }
 
     @Override

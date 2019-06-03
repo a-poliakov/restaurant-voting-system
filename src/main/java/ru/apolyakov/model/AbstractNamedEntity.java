@@ -4,9 +4,14 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.SafeHtml;
 import ru.apolyakov.View;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.Size;
 
+@MappedSuperclass
+@Access(AccessType.FIELD)
 public class AbstractNamedEntity  extends AbstractBaseEntity {
     @NotBlank
     @Size(min = 2, max = 100)

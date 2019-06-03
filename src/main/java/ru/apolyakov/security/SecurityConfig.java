@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
+        return org.springframework.security.crypto.factory.PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Bean
@@ -64,9 +64,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // настройка мэппингов, требующих авторизацию
                 .authorizeRequests()
-                .antMatchers("/api").authenticated()
-                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                //.antMatchers("/api").authenticated()
+                .antMatchers("/api/menuItems/**").hasRole("ADMIN")
+                .antMatchers("/api/restaurants/**").hasRole("ADMIN")
+                .antMatchers("/api/menus/**").hasRole("ADMIN")
                 .antMatchers("/api/vote/**").hasRole("USER")
+                .antMatchers("/api/votes/**").hasRole("NOBODY")
+
                 .and()
                 // authentication processing filter: org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
                 // formLogin create this filter and provide additional methods (onSuccess and onFailure)

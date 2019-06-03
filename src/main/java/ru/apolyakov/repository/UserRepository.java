@@ -9,7 +9,7 @@ import ru.apolyakov.model.User;
  * @author apolyakov
  * @since 06.01.2019
  */
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends CrudRepository<User, Integer> {
     User getByLogin(String login);
-    User getById(Long id);
+    User getById(Integer id);
 }
